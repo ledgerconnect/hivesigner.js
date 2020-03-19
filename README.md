@@ -1,68 +1,68 @@
-[![npm](https://img.shields.io/npm/v/steemconnect.svg)](https://www.npmjs.com/package/steemconnect)
-![npm](https://img.shields.io/npm/dm/steemconnect.svg)
-![CircleCI](https://img.shields.io/circleci/project/github/bonustrack/steemconnect.js.svg)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bonustrack/steemconnect.js/master/LICENSE)
+[![npm](https://img.shields.io/npm/v/hivesigner.svg)](https://www.npmjs.com/package/hivesigner)
+![npm](https://img.shields.io/npm/dm/hivesigner.svg)
+![CircleCI](https://img.shields.io/circleci/project/github/ledgerconnect/hivesigner.js.svg)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/ledgerconnect/hivesigner.js/master/LICENSE)
 
-# SteemConnect.js
+# HiveSigner.js
 
-The official SteemConnect JavaScript SDK.
+The official HiveSigner JavaScript SDK.
 
 ## Getting started
 
-To install and run SteemConnect.js, follow this quick start guide
+To install and run HiveSigner.js, follow this quick start guide
 
 ### Install
 
-SteemConnect.js was designed to work both in the browser and in Node.js.
+HiveSigner.js was designed to work both in the browser and in Node.js.
 
 #### Node.js
-To install SteemConnect.js on Node.js, open your terminal and run:
+To install HiveSigner.js on Node.js, open your terminal and run:
 ```
-npm i steemconnect --save
+npm i hivesigner --save
 ```
 
 #### Browser
 
-You can create an index.html file and include SteemConnect.js with:
+You can create an index.html file and include HiveSigner.js with:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/steemconnect"></script>
+<script src="https://cdn.jsdelivr.net/npm/hivesigner"></script>
 ```
 
 ### Usage
 
-For general information about SteemConnect and setting up your app you can checkout the developer documentation.
+For general information about HiveSigner and setting up your app you can checkout the developer documentation.
 
-**[Developers documentation](https://beta.steemconnect.com/developers)**
+**[Developers documentation](https://hivesigner.com/developers)**
 
 ## SDK methods
 
 ### Init client
 Call the Client() method when your app first loads to init the SDK:
 ```
-var steemconnect = require('steemconnect');
+var hivesigner = require('hivesigner');
 
-var client = new steemconnect.Client({
+var client = new hivesigner.Client({
   app: 'staging.app',
-  callbackURL: 'https://demo.steemconnect.com',
+  callbackURL: 'https://demo.hivesigner.com',
   scope: ['vote', 'comment']
 });
 ```
 Parameters:
-- __app__: This is the name of the app that was registered in the SteemConnect V2 dashboard
-- __callbackURL__: This is the URL that users will be redirected to after interacting with SteemConnect. It must be listed in the "Redirect URI(s)" list in the app settings EXACTLY the same as it is specified here
-- __accessToken__: If you have an oauth2 access token for this user already you can specify it here, otherwise you can leave it and set it later using steemconnect.setAccessToken(accessToken).
-- __scope__: This is a list of operations the app will be able to access on the user's account. For a complete list of scopes see: [https://github.com/bonustrack/steemconnect/wiki/OAuth-2#scopes](https://github.com/bonustrack/steemconnect/wiki/OAuth-2#scopes)
+- __app__: This is the name of the app that was registered in the HiveSigner dashboard
+- __callbackURL__: This is the URL that users will be redirected to after interacting with HiveSigner. It must be listed in the "Redirect URI(s)" list in the app settings EXACTLY the same as it is specified here
+- __accessToken__: If you have an oauth2 access token for this user already you can specify it here, otherwise you can leave it and set it later using hivesigner.setAccessToken(accessToken).
+- __scope__: This is a list of operations the app will be able to access on the user's account. For a complete list of scopes see: [https://github.com/ledgerconnect/hivesigner/wiki/OAuth-2#scopes](https://github.com/ledgerconnect/hivesigner/wiki/OAuth-2#scopes)
 
 ### Universal log in
 
-This method trigger SteemConnect Chrome extension or Steem Keychain for log in, if user don't have Chrome extension enabled it will fallback to SteemConnect website.
+This method trigger HiveSigner Chrome extension or Hive Keychain for log in, if user don't have Chrome extension enabled it will fallback to HiveSigner website.
 
 ```
 var params = {};
 
-// The "username" parameter is required prior to log in for "Steem Keychain" users.
-if (steemconnect.useSteemKeychain) {
+// The "username" parameter is required prior to log in for "Hive Keychain" users.
+if (hivesigner.useHiveKeychain) {
   params = { username: 'fabien' };
 }
 
@@ -72,16 +72,16 @@ client.login(params, function(err, token) {
 ```
 
 ### Get login URL for OAuth 2
-The following method returns a URL that you can redirect the user to so that they may log in to your app through SteemConnect:
+The following method returns a URL that you can redirect the user to so that they may log in to your app through HiveSigner:
 ```
 var link = client.getLoginURL(state);
-// => https://steemconnect.com/oauth2/authorize?client_id=[app]&redirect_uri=[callbackURL]&scope=vote,comment&state=[state]
+// => https://hivesigner.com/oauth2/authorize?client_id=[app]&redirect_uri=[callbackURL]&scope=vote,comment&state=[state]
 ```
 Parameters:
 - __state__: Data that will be passed to the callbackURL for your app after the user has logged in.
 
-After logging in, SteemConnect will redirect the user to the "redirect_uri" specified in the login url above and add the following query string parameters for your app to use:
-- __access_token__: This is the oauth2 access token that is required to make any Steem API calls on behalf of the current user. Once you have this you need to tell the SteemConnect.js to use it by either specifying it as a parameter to the init() method call or by calling sc2.setAccessToken([accessToken]).
+After logging in, HiveSigner will redirect the user to the "redirect_uri" specified in the login url above and add the following query string parameters for your app to use:
+- __access_token__: This is the oauth2 access token that is required to make any Hive API calls on behalf of the current user. Once you have this you need to tell the HiveSigner.js to use it by either specifying it as a parameter to the init() method call or by calling sc2.setAccessToken([accessToken]).
 - __expires_in__: The number of seconds until the access token expires.
 - __username__: The username of the current user.
 
@@ -119,9 +119,9 @@ client.vote(voter, author, permlink, weight, function (err, res) {
 });
 ```
 Parameters:
-- __voter__: The Steem username of the current user.
-- __author__: The Steem username of the author of the post or comment.
-- __permlink__: The link to the post or comment on which to vote. This is the portion of the URL after the last "/". For example the "permlink" for this post: https://steemit.com/steem/@ned/announcing-smart-media-tokens-smts would be "announcing-smart-media-tokens-smts".
+- __voter__: The Hive username of the current user.
+- __author__: The Hive username of the author of the post or comment.
+- __permlink__: The link to the post or comment on which to vote. This is the portion of the URL after the last "/". For example the "permlink" for this post: https://esteem.app/communityfork/@hiveio/announcing-the-launch-of-hive-blockchain would be "announcing-the-launch-of-hive-blockchain".
 - __weight__: The weight of the vote. 10000 equale a 100% vote.
 - __callback__: A function that is called once the vote is submitted and included in a block. If successful the "res" variable will be a JSON object containing the details of the block and the vote operation.
 
@@ -192,9 +192,9 @@ client.claimRewardBalance(account, rewardSteem, rewardSbd, rewardVests, function
 const op = ['transfer', {
   from: '__signer',
   to: 'fabien',
-  amount: '0.001 STEEM'
+  amount: '0.001 HIVE'
 }];
-steemconnect.sendOperation(op, {}, function(err, result) {
+hivesigner.sendOperation(op, {}, function(err, result) {
   console.log(err, result);
 });
 ```
