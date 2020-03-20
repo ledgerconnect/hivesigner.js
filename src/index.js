@@ -3,7 +3,7 @@ import { encodeTx, encodeOps, encodeOp } from 'steem-uri';
 
 const BASE_URL = 'https://hivesigner.com';
 const BETA_URL = 'https://hivesigner.com';
-const API_URL = 'https://api.hivesigner.com';
+const API_URL = 'https://hivesigner.com';
 
 const isBrowser = () => typeof window !== 'undefined' && window;
 
