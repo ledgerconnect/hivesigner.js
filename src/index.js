@@ -1,5 +1,5 @@
 import fetch from 'cross-fetch';
-import { encodeTx, encodeOps, encodeOp } from 'steem-uri';
+import { encodeTx, encodeOps, encodeOp } from 'hive-uri';
 
 const BASE_URL = 'https://hivesigner.com';
 const BETA_URL = 'https://hivesigner.com';
