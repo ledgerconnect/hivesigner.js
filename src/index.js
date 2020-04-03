@@ -15,7 +15,7 @@ const useHiveKeychain = () => !hasChromeExtension() && hasHiveKeychain();
 
 const sendTransaction = (tx, params, cb) => {
   const uri = encodeTx(tx, params);
-  const webUrl = uri.replace('steem://', `${BETA_URL}/`);
+  const webUrl = uri.replace('hive://', `${BETA_URL}/`);
   if (hasChromeExtension()) return window._hivesigner.sign(uri, cb);
   if (cb && isBrowser()) {
     const win = window.open(webUrl, '_blank');
@@ -26,7 +26,7 @@ const sendTransaction = (tx, params, cb) => {
 
 const sendOperations = (ops, params, cb) => {
   const uri = encodeOps(ops, params);
-  const webUrl = uri.replace('steem://', `${BETA_URL}/`);
+  const webUrl = uri.replace('hive://', `${BETA_URL}/`);
   if (hasChromeExtension()) return window._hivesigner.sign(uri, cb);
   if (cb && isBrowser()) {
     const win = window.open(webUrl, '_blank');
@@ -37,7 +37,7 @@ const sendOperations = (ops, params, cb) => {
 
 const sendOperation = (op, params, cb) => {
   const uri = encodeOp(op, params);
-  const webUrl = uri.replace('steem://', `${BETA_URL}/`);
+  const webUrl = uri.replace('hive://', `${BETA_URL}/`);
   if (hasChromeExtension()) return window._hivesigner.sign(uri, cb);
   if (cb && isBrowser()) {
     const win = window.open(webUrl, '_blank');
