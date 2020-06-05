@@ -176,12 +176,6 @@ class Client {
   }
 
   vote(voter, author, permlink, weight, cb) {
-    if (useHiveKeychain()) {
-      return window.hive_keychain.requestVote(voter, permlink, author, weight, response => {
-        if (response.error) return cb(response.error);
-        return cb(null, response);
-      });
-    }
     const params = {
       voter,
       author,
@@ -192,22 +186,6 @@ class Client {
   }
 
   comment(parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, cb) {
-    if (useHiveKeychain()) {
-      return window.hive_keychain.requestPost(
-        author,
-        title,
-        body,
-        parentPermlink,
-        parentAuthor,
-        jsonMetadata,
-        permlink,
-        '',
-        response => {
-          if (response.error) return cb(response.error);
-          return cb(null, response);
-        },
-      );
-    }
     const params = {
       parent_author: parentAuthor,
       parent_permlink: parentPermlink,
@@ -229,19 +207,6 @@ class Client {
   }
 
   customJson(requiredAuths, requiredPostingAuths, id, json, cb) {
-    if (useHiveKeychain()) {
-      return window.hive_keychain.requestCustomJson(
-        requiredPostingAuths[0],
-        id,
-        'Posting',
-        json,
-        '',
-        response => {
-          if (response.error) return cb(response.error);
-          return cb(null, response);
-        },
-      );
-    }
     const params = {
       required_auths: requiredAuths,
       required_posting_auths: requiredPostingAuths,

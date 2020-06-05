@@ -43,7 +43,7 @@ Call the Client() method when your app first loads to init the SDK:
 var hivesigner = require('hivesigner');
 
 var client = new hivesigner.Client({
-  app: 'staging.app',
+  app: 'demo',
   callbackURL: 'https://demo.hivesigner.com',
   scope: ['vote', 'comment']
 });
