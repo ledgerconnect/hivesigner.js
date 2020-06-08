@@ -186,6 +186,10 @@ class Client {
   }
 
   comment(parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, cb) {
+    let json = jsonMetadata;
+    if (!(typeof jsonMetadata === 'string' || jsonMetadata instanceof String)) {
+      json = JSON.stringify(jsonMetadata);
+    }
     const params = {
       parent_author: parentAuthor,
       parent_permlink: parentPermlink,
@@ -193,7 +197,7 @@ class Client {
       permlink,
       title,
       body,
-      json_metadata: JSON.stringify(jsonMetadata),
+      json_metadata: json,
     };
     return this.broadcast([['comment', params]], cb);
   }
