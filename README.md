@@ -28,6 +28,10 @@ You can create an index.html file and include HiveSigner.js with:
 ```html
 <script src="https://cdn.jsdelivr.net/npm/hivesigner"></script>
 ```
+or
+```html
+  <script src="https://unpkg.com/hivesigner@latest/dist/hivesigner.min.js"></script>
+```
 
 ### Usage
 
@@ -63,7 +67,7 @@ var params = {};
 
 // The "username" parameter is required prior to log in for "Hive Keychain" users.
 if (hivesigner.useHiveKeychain) {
-  params = { username: 'fabien' };
+  params = { username: 'demo' };
 }
 
 client.login(params, function(err, token) {
@@ -95,11 +99,11 @@ client.me(function (err, res) {
 If it is successful, the result will be a JSON object with the following properties:
 ```
 {
-  account: { id: 338059, name: "yabapmatt", ...},
-  name: "yabapmatt",
+  account: { id: 43593, name: "demo", ...},
+  name: "demo",
   scope: ["vote"],
-  user: "yabapmatt",
-  _id: "yabapmatt"
+  user: "demo",
+  _id: "demo"
 }
 ```
 
@@ -191,7 +195,7 @@ client.claimRewardBalance(account, rewardSteem, rewardSbd, rewardVests, function
 ```
 const op = ['transfer', {
   from: '__signer',
-  to: 'fabien',
+  to: 'demo123',
   amount: '0.001 HIVE'
 }];
 hivesigner.sendOperation(op, {}, function(err, result) {
