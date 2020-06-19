@@ -60,19 +60,10 @@ Parameters:
 
 ### Universal log in
 
-This method trigger HiveSigner Chrome extension or Hive Keychain for log in, if user don't have Chrome extension enabled it will fallback to HiveSigner website.
+This method redirects to login screen on HiveSigner website.
 
 ```
-var params = {};
-
-// The "username" parameter is required prior to log in for "Hive Keychain" users.
-if (hivesigner.useHiveKeychain) {
-  params = { username: 'demo' };
-}
-
-client.login(params, function(err, token) {
-  console.log(err, token)
-});
+client.login(params);
 ```
 
 ### Get login URL for OAuth 2

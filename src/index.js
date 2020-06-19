@@ -7,16 +7,9 @@ const API_URL = 'https://hivesigner.com';
 
 const isBrowser = () => typeof window !== 'undefined' && window;
 
-const hasChromeExtension = () => isBrowser() && window._hivesigner;
-
-const hasHiveKeychain = () => isBrowser() && window.hive_keychain;
-
-const useHiveKeychain = () => !hasChromeExtension() && hasHiveKeychain();
-
 const sendTransaction = (tx, params, cb) => {
   const uri = encodeTx(tx, params);
   const webUrl = uri.replace('hive://', `${BETA_URL}/`);
-  if (hasChromeExtension()) return window._hivesigner.sign(uri, cb);
   if (cb && isBrowser()) {
     const win = window.open(webUrl, '_blank');
     return win.focus();
@@ -27,7 +20,6 @@ const sendTransaction = (tx, params, cb) => {
 const sendOperations = (ops, params, cb) => {
   const uri = encodeOps(ops, params);
   const webUrl = uri.replace('hive://', `${BETA_URL}/`);
-  if (hasChromeExtension()) return window._hivesigner.sign(uri, cb);
   if (cb && isBrowser()) {
     const win = window.open(webUrl, '_blank');
     return win.focus();
@@ -38,7 +30,6 @@ const sendOperations = (ops, params, cb) => {
 const sendOperation = (op, params, cb) => {
   const uri = encodeOp(op, params);
   const webUrl = uri.replace('hive://', `${BETA_URL}/`);
-  if (hasChromeExtension()) return window._hivesigner.sign(uri, cb);
   if (cb && isBrowser()) {
     const win = window.open(webUrl, '_blank');
     return win.focus();
@@ -102,38 +93,13 @@ class Client {
     return loginURL;
   }
 
-  login(options, cb) {
-    if (hasChromeExtension()) {
-      const params = {};
-      if (this.app) params.app = this.app;
-      if (options.authority) params.authority = options.authority;
-      window._hivesigner.login(params, cb);
-    } else if (hasHiveKeychain() && options.username) {
-      const signedMessageObj = { type: 'login' };
-      if (this.app) signedMessageObj.app = this.app;
-      const timestamp = parseInt(new Date().getTime() / 1000, 10);
-      const messageObj = {
-        signed_message: signedMessageObj,
-        authors: [options.username],
-        timestamp,
-      };
-      window.hive_keychain.requestSignBuffer(
-        options.username,
-        JSON.stringify(messageObj),
-        'Posting',
-        response => {
-          if (response.error) return cb(response.error);
-          messageObj.signatures = [response.result];
-          const token = btoa(JSON.stringify(messageObj));
-          return cb(null, token);
-        },
-      );
-    } else if (isBrowser()) {
+  login(options) {
+    if (isBrowser()) {
       window.location = this.getLoginURL(options.state);
     }
   }
 
-  send(route, method, body, cb) {
+  async send(route, method, body, cb) {
     const url = `${this.apiURL}/api/${route}`;
     const promise = fetch(url, {
       method,
@@ -144,10 +110,11 @@ class Client {
       },
       body: JSON.stringify(body),
     })
-      .then(res => {
+      .then(async res => {
         const json = res.json();
         if (res.status !== 200) {
-          return json.then(result => Promise.reject(result));
+          const result = await json;
+          return await Promise.reject(result);
         }
         return json;
       })
@@ -160,7 +127,13 @@ class Client {
 
     if (!cb) return promise;
 
-    return promise.then(res => cb(null, res)).catch(err => cb(err, null));
+    try {
+      const res_2 = await promise;
+      return cb(null, res_2);
+    }
+    catch (err) {
+      return cb(err, null);
+    }
   }
 
   me(cb) {
@@ -168,10 +141,6 @@ class Client {
   }
 
   broadcast(operations, cb) {
-    if (hasChromeExtension()) {
-      const uri = encodeOps(operations);
-      return window._hivesigner.sign(uri, cb);
-    }
     return this.send('broadcast', 'POST', { operations }, cb);
   }
 
@@ -250,10 +219,9 @@ class Client {
     return this.broadcast([['claim_reward_balance', params]], cb);
   }
 
-  revokeToken(cb) {
-    return this.send('oauth2/token/revoke', 'POST', { token: this.accessToken }, cb).then(() =>
-      this.removeAccessToken(),
-    );
+  async revokeToken(cb) {
+    await this.send('oauth2/token/revoke', 'POST', { token: this.accessToken }, cb);
+    return this.removeAccessToken();
   }
 
   updateUserMetadata(metadata = {}, cb) {
@@ -290,7 +258,4 @@ export default {
   sendTransaction,
   sendOperations,
   sendOperation,
-  hasChromeExtension,
-  hasHiveKeychain,
-  useHiveKeychain,
 };
