@@ -58,7 +58,7 @@ Parameters:
 - __accessToken__: If you have an oauth2 access token for this user already you can specify it here, otherwise you can leave it and set it later using hivesigner.setAccessToken(accessToken).
 - __scope__: This is a list of operations the app will be able to access on the user's account. For a complete list of scopes see: [https://github.com/ledgerconnect/hivesigner/wiki/OAuth-2#scopes](https://github.com/ledgerconnect/hivesigner/wiki/OAuth-2#scopes)
 
-### Universal log in
+### Login
 
 This method redirects to login screen on HiveSigner website.
 
@@ -94,7 +94,8 @@ If it is successful, the result will be a JSON object with the following propert
   name: "demo",
   scope: ["vote"],
   user: "demo",
-  _id: "demo"
+  _id: "demo",
+  user_metadata: {profile: {name: "Demo account", ...}}
 }
 ```
 
