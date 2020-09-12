@@ -28,6 +28,10 @@ You can create an index.html file and include HiveSigner.js with:
 ```html
 <script src="https://cdn.jsdelivr.net/npm/hivesigner"></script>
 ```
+or
+```html
+  <script src="https://unpkg.com/hivesigner@latest/dist/hivesigner.min.js"></script>
+```
 
 ### Usage
 
@@ -49,26 +53,17 @@ var client = new hivesigner.Client({
 });
 ```
 Parameters:
-- __app__: This is the name of the app that was registered in the HiveSigner dashboard
+- __app__: This is the username of the app that was registered in the HiveSigner dashboard
 - __callbackURL__: This is the URL that users will be redirected to after interacting with HiveSigner. It must be listed in the "Redirect URI(s)" list in the app settings EXACTLY the same as it is specified here
 - __accessToken__: If you have an oauth2 access token for this user already you can specify it here, otherwise you can leave it and set it later using hivesigner.setAccessToken(accessToken).
 - __scope__: This is a list of operations the app will be able to access on the user's account. For a complete list of scopes see: [https://github.com/ledgerconnect/hivesigner/wiki/OAuth-2#scopes](https://github.com/ledgerconnect/hivesigner/wiki/OAuth-2#scopes)
 
-### Universal log in
+### Login
 
-This method trigger HiveSigner Chrome extension or Hive Keychain for log in, if user don't have Chrome extension enabled it will fallback to HiveSigner website.
+This method redirects to login screen on HiveSigner website.
 
 ```
-var params = {};
-
-// The "username" parameter is required prior to log in for "Hive Keychain" users.
-if (hivesigner.useHiveKeychain) {
-  params = { username: 'fabien' };
-}
-
-client.login(params, function(err, token) {
-  console.log(err, token)
-});
+client.login(params);
 ```
 
 ### Get login URL for OAuth 2
@@ -95,11 +90,12 @@ client.me(function (err, res) {
 If it is successful, the result will be a JSON object with the following properties:
 ```
 {
-  account: { id: 338059, name: "yabapmatt", ...},
-  name: "yabapmatt",
+  account: { id: 43593, name: "demo", ...},
+  name: "demo",
   scope: ["vote"],
-  user: "yabapmatt",
-  _id: "yabapmatt"
+  user: "demo",
+  _id: "demo",
+  user_metadata: {profile: {name: "Demo account", ...}}
 }
 ```
 
@@ -191,7 +187,7 @@ client.claimRewardBalance(account, rewardSteem, rewardSbd, rewardVests, function
 ```
 const op = ['transfer', {
   from: '__signer',
-  to: 'fabien',
+  to: 'demo123',
   amount: '0.001 HIVE'
 }];
 hivesigner.sendOperation(op, {callback: `https://ecency.com/@${from}/wallet`}, function(err, result) {
