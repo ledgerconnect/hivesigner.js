@@ -194,7 +194,17 @@ const op = ['transfer', {
   to: 'fabien',
   amount: '0.001 HIVE'
 }];
-hivesigner.sendOperation(op, {}, function(err, result) {
+hivesigner.sendOperation(op, {callback: `https://ecency.com/@${from}/wallet`}, function(err, result) {
   console.log(err, result);
 });
 ```
+
+## Redirect with transaction id
+
+### Using redirect uri
+
+```
+https://hivesigner.com/sign/custom-json?authority=active&required_auths=%5B%22${user}%22%5D&required_posting_auths=%5B%5D&id=someid&json=${encodeURIComponent(json)}&redirect_uri=https://ecency.com/
+```
+
+The result will be : https://ecency.com/?id=XXX
