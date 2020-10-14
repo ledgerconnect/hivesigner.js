@@ -128,8 +128,8 @@ class Client {
     if (!cb) return promise;
 
     try {
-      const res_2 = await promise;
-      return cb(null, res_2);
+      const res2 = await promise;
+      return cb(null, res2);
     }
     catch (err) {
       return cb(err, null);
@@ -209,11 +209,11 @@ class Client {
     return this.customJson([], [follower], 'follow', JSON.stringify(json), cb);
   }
 
-  claimRewardBalance(account, rewardSteem, rewardSbd, rewardVests, cb) {
+  claimRewardBalance(account, rewardHive, rewardHbd, rewardVests, cb) {
     const params = {
       account,
-      reward_steem: rewardSteem,
-      reward_sbd: rewardSbd,
+      reward_hive: rewardHive,
+      reward_hbd: rewardHbd,
       reward_vests: rewardVests,
     };
     return this.broadcast([['claim_reward_balance', params]], cb);

@@ -1,6 +1,6 @@
 {
   "name": "hivesigner",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "The official HiveSigner JavaScript SDK",
   "homepage": "https://hivesigner.com",
   "browser": "dist/hivesigner.min.js",
